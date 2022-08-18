@@ -1,13 +1,27 @@
 package com.cognizant.pensionerdetailsservice.model;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+//Entity class for bank details
+@Getter
+@Setter
+@NoArgsConstructor
+@ToString
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BankDetails {
@@ -20,41 +34,14 @@ public class BankDetails {
 	@OneToOne(fetch = FetchType.EAGER, mappedBy = "bankDetails")
 	@JsonIgnore
 	private PensionerDetails pensionerDetails;
-	
-	public BankDetails() {}
-	
+
 	public BankDetails(String accountNumber, String bankName, String bankType) {
 		super();
 		this.accountNumber = accountNumber;
 		this.bankName = bankName;
 		this.bankType = bankType;
 	}
-	public String getAccountNumber() {
-		return accountNumber;
-	}
-	public void setAccountNumber(String accountNumber) {
-		this.accountNumber = accountNumber;
-	}
-	public String getBankName() {
-		return bankName;
-	}
-	public void setBankName(String bankName) {
-		this.bankName = bankName;
-	}
-	public String getBankType() {
-		return bankType;
-	}
-	public void setBankType(String bankType) {
-		this.bankType = bankType;
-	}
-
-	public PensionerDetails getPensionerDetails() {
-		return pensionerDetails;
-	}
-
-	public void setPensionerDetails(PensionerDetails pensionerDetails) {
-		this.pensionerDetails = pensionerDetails;
-	}
-
+	
+	
 
 }

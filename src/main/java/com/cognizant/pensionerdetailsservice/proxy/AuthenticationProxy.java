@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import com.cognizant.pensionerdetailsservice.model.Token;
 import com.cognizant.pensionerdetailsservice.model.UserLogin;
 
+//Feign client authentication proxy 
 @FeignClient(name = "auth-service", url = "${AUTHENTICATION_SERVICE_PROXY:http://localhost:8084}")
 public interface AuthenticationProxy {
 
@@ -17,9 +18,7 @@ public interface AuthenticationProxy {
 			@RequestHeader(name = "Authorization") String token1);
 	
 	@PostMapping("/auth/login")
-	//@ApiOperation(value = "userLogin", notes = "tokes user credentials and generate a JWT", httpMethod = "POST", response = ResponseEntity.class)
 	public Token login(
-			//@ApiParam(name = "userloginCredentials", value = "Login credentials of the User.") 
 			@RequestBody UserLogin userLoginCredentials);
 		
 }

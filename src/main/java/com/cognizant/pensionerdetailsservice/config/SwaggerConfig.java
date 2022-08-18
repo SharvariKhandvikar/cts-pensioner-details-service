@@ -31,6 +31,7 @@ import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
+//This is configuration for swagger and configuration to use actuators for providing support to spring 2.6+ versions
 @Configuration
 @EnableWebMvc
 public class SwaggerConfig implements WebMvcConfigurer {
