@@ -1,0 +1,10 @@
+version: 1.0
+Resources:
+  - TargetService:
+      Type: AWS::ECS::Service
+      Properties:
+        TaskDefinition: "arn:aws:iam::348248362259:role/ecsTaskExecutionRole"
+        LoadBalancerInfo:
+          ContainerName: "pensioner-details"
+          ContainerPort: "8000"
+        PlatformVersion: "LATEST"

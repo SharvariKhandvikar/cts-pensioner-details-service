@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cognizant.pensionerdetailsservice.model.BankDetails;
 import com.cognizant.pensionerdetailsservice.model.PensionerDetails;
+import com.cognizant.pensionerdetailsservice.model.UserLogin;
 import com.cognizant.pensionerdetailsservice.proxy.AuthenticationProxy;
 import com.cognizant.pensionerdetailsservice.repository.BankDetailsRepository;
 import com.cognizant.pensionerdetailsservice.repository.PensionerDetailsRepository;
@@ -34,7 +35,7 @@ public class PensionerDetailsController {
 	@Autowired
 	AuthenticationProxy proxy;
 	
-	@GetMapping("/pensioner-details/pensionerdetails/{adharNumber}")
+	@GetMapping("/pensionerdetails/{adharNumber}")
 	public PensionerDetails getPensionerDetailsByAdhar(@RequestHeader(name = "Authorization") String token,
 			@PathVariable("adharNumber") String adharNumber) {
 		
@@ -56,7 +57,7 @@ public class PensionerDetailsController {
 		return pensionerDetails;
 	}
 	
-	@PostMapping("/pensioner-details/save/pensionerdetails")
+	@PostMapping("/save/pensionerdetails")
 	public PensionerDetails savePensioner(@RequestHeader(name = "Authorization") String token,
 			@RequestBody PensionerDetails pensionerDetails) {
 		
@@ -70,5 +71,13 @@ public class PensionerDetailsController {
 		return pd;
 	}
 	
+	
+
+	//To generate token for Junit testing
+	public String  generateToken() {
+		String token = proxy.login(new UserLogin("user1", "user1")).getToken();
+		log.info("token ======>>>> "+token);
+		return token;
+	}
 
 }

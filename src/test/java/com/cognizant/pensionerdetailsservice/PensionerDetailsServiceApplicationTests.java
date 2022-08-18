@@ -5,11 +5,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Optional;
 
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,35 +20,35 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.cognizant.pensionerdetailsservice.controller.PensionerDetailsController;
 import com.cognizant.pensionerdetailsservice.model.BankDetails;
 import com.cognizant.pensionerdetailsservice.model.PensionerDetails;
+import com.cognizant.pensionerdetailsservice.model.UserLogin;
+import com.cognizant.pensionerdetailsservice.proxy.AuthenticationProxy;
 import com.cognizant.pensionerdetailsservice.repository.PensionerDetailsRepository;
 
 @SpringBootTest
+@TestMethodOrder(OrderAnnotation.class)
 class PensionerDetailsServiceApplicationTests {
 	
 	Logger log = LoggerFactory.getLogger(PensionerDetailsServiceApplicationTests.class);
 	
 	@Autowired
-	PensionerDetailsController controller;
+    PensionerDetailsController controller;
 	@Autowired
 	PensionerDetailsRepository pensionerRepo;
-	
+	@Autowired
+	AuthenticationProxy proxy;
+
 	
 	Date date = new Date();
 	BankDetails bd = new BankDetails("7777777777", "Bank Of Test", "private"); 
 	PensionerDetails pd = new PensionerDetails("666666666666", "test",date, 
-			"TEST5568P", 50000, 10000, "self",bd);
-		
-	String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMSIsImV4cCI6MTY2MDUyMjE4MywiaWF0IjoxNjYwNTIwMzgzfQ.Pd5rmDT-cT5j23blmtMrCJLlWHW7-2ciKFprsfLGC_8";
-
-	@Test
-	void contextLoads() {
-	}
-	
+			"TEST5568P", 50000, 10000, "self",bd);	
 	@Test
 	void testGetPensionerDetails() {
 		String adharNumber = "110911599416";
 		Optional<PensionerDetails> list = pensionerRepo.findById(adharNumber);
 		PensionerDetails expected = list.get();
+		String token = controller.generateToken();
+		log.info("token passing to request ======>>>> "+token);
 		PensionerDetails actual = controller.getPensionerDetailsByAdhar(token, adharNumber);
 		assertEquals(expected.getAdharNumber(), actual.getAdharNumber());
 		assertEquals(expected.getAllowances(), actual.getAllowances());
@@ -63,6 +65,7 @@ class PensionerDetailsServiceApplicationTests {
 	@Test
 	void testGetPensionerDetailsException() {
 		String adharNumber = "110911599419";
+		String token = controller.generateToken();
 		RuntimeException thrown = assertThrows(RuntimeException.class,
 				() -> controller.getPensionerDetailsByAdhar(token, adharNumber),
 				"Exception did not matched!!!");
@@ -104,6 +107,7 @@ class PensionerDetailsServiceApplicationTests {
 	
 	@Test
 	void testPostPensionerDetails() {
+		String token = controller.generateToken();
 		PensionerDetails actual = controller.savePensioner(token, pd);
 		PensionerDetails expected = pd;
 		
@@ -131,7 +135,7 @@ class PensionerDetailsServiceApplicationTests {
 	void testSetFunctions() {
 		PensionerDetails pend = new PensionerDetails();
 		BankDetails bankd = new BankDetails();
-		pend.setAdharNumber("4444444444444444");
+		pend.setAdharNumber("0000000000000");
 		pend.setAllowances(5000);
 		pend.setDob(new Date());
 		pend.setName("Settestname");

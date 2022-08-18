@@ -7,7 +7,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import com.cognizant.pensionerdetailsservice.proxy.AuthenticationProxy;
 
 @SpringBootApplication
-//@EnableDiscoveryClient
 @EnableFeignClients(clients = {AuthenticationProxy.class})
 public class PensionerDetailsServiceApplication {
 	
