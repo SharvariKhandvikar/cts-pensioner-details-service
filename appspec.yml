@@ -3,8 +3,8 @@ Resources:
   - TargetService:
       Type: AWS::ECS::Service
       Properties:
-        TaskDefinition: "arn:aws:iam::348248362259:role/ecsTaskExecutionRole"
+        TaskDefinition: "arn:aws:iam::860061945305:role/ecsTaskExecutionRole"
         LoadBalancerInfo:
-          ContainerName: "pensioner-details"
+          ContainerName: "pensioner-details-service-sk"
           ContainerPort: "8000"
         PlatformVersion: "LATEST"
